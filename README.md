@@ -1,3 +1,58 @@
+# Pomodoro Timer
+
+A responsive Pomodoro timer web app built with React and Vite.
+
+## Features
+
+- Focus and break timer
+- Start, pause, and reset controls
+- Automatic session switching
+- Circular progress indicator
+- Daily session history
+- Persistent storage using localStorage
+- Responsive design for desktop and mobile
+- Audible notification on session completion
+
+## Tech Stack
+
+- React
+- Vite
+- CSS
+
+## Run Locally
+
+Clone the repository:
+
+```bash
+git clone <repo-url>
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start development server:
+
+```bash
+npm run dev
+```
+
+Open:
+
+```txt
+http://localhost:5173
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
