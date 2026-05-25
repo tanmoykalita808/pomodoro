@@ -40,6 +40,18 @@ function App() {
   }, [history]);
 
   useEffect(() => {
+  if (mode === "focus") {
+    setSecondsLeft(focusMinutes * 60);
+  }
+}, [focusMinutes]);
+
+useEffect(() => {
+  if (mode === "break") {
+    setSecondsLeft(breakMinutes * 60);
+  }
+}, [breakMinutes]);
+
+  useEffect(() => {
     let interval;
 
     if (isRunning) {

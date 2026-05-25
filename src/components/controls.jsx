@@ -6,13 +6,30 @@ function Controls({
 }) {
   return (
     <div className="controls">
+
       {!isRunning ? (
-        <button onClick={startTimer}>Start</button>
+        <button
+          className="primary-btn"
+          onClick={startTimer}
+        >
+          Start
+        </button>
       ) : (
-        <button onClick={pauseTimer}>Pause</button>
+        <button
+          className="primary-btn"
+          onClick={pauseTimer}
+        >
+          Pause
+        </button>
       )}
 
-      <button onClick={resetTimer}>Reset</button>
+      <button
+        className="secondary-btn"
+        onClick={resetTimer}
+      >
+        Reset
+      </button>
+
     </div>
   );
 }

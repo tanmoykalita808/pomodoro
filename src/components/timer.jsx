@@ -4,7 +4,11 @@ function Timer({ secondsLeft, mode }) {
 
   return (
     <div className="timer-section">
-      <h2>{mode === "focus" ? "Focus Time" : "Break Time"}</h2>
+      <p className="mode-text">
+        {mode === "focus"
+          ? "Focus Session"
+          : "Break Time"}
+      </p>
 
       <div className="timer">
         {minutes}:{seconds}
