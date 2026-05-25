@@ -1,119 +1,226 @@
 import { useEffect, useState } from "react";
+
 import Timer from "./components/Timer";
 import Controls from "./components/Controls";
 import Settings from "./components/Settings";
 import History from "./components/History";
+import ProgressRing from "./components/ProgressRing";
 
 function App() {
+
   const [focusMinutes, setFocusMinutes] = useState(25);
+
   const [breakMinutes, setBreakMinutes] = useState(5);
 
   const [mode, setMode] = useState("focus");
+
   const [isRunning, setIsRunning] = useState(false);
 
-  const [secondsLeft, setSecondsLeft] = useState(focusMinutes * 60);
+  const [secondsLeft, setSecondsLeft] =
+    useState(focusMinutes * 60);
 
-  const [history, setHistory] = useState(() => {
-    const saved = localStorage.getItem("pomodoro-history");
-    const today = new Date().toDateString();
+  const [animate, setAnimate] =
+    useState(false);
 
-    if (!saved) return [];
+  const totalSeconds =
+    mode === "focus"
+      ? focusMinutes * 60
+      : breakMinutes * 60;
 
-    const parsed = JSON.parse(saved);
+  const [history, setHistory] =
+    useState(() => {
 
-    if (parsed.date !== today) {
-      localStorage.removeItem("pomodoro-history");
-      return [];
-    }
+      const saved =
+        localStorage.getItem(
+          "pomodoro-history"
+        );
 
-    return parsed.sessions;
-  });
+      const today =
+        new Date().toDateString();
+
+      if (!saved) return [];
+
+      const parsed = JSON.parse(saved);
+
+      if (parsed.date !== today) {
+
+        localStorage.removeItem(
+          "pomodoro-history"
+        );
+
+        return [];
+      }
+
+      return parsed.sessions;
+    });
 
   useEffect(() => {
+
     localStorage.setItem(
       "pomodoro-history",
+
       JSON.stringify({
-        date: new Date().toDateString(),
+        date:
+          new Date().toDateString(),
+
         sessions: history,
       })
     );
+
   }, [history]);
 
   useEffect(() => {
-  if (mode === "focus") {
-    setSecondsLeft(focusMinutes * 60);
-  }
-}, [focusMinutes]);
 
-useEffect(() => {
-  if (mode === "break") {
-    setSecondsLeft(breakMinutes * 60);
-  }
-}, [breakMinutes]);
+    if (mode === "focus") {
+
+      setSecondsLeft(
+        focusMinutes * 60
+      );
+    }
+
+  }, [focusMinutes]);
 
   useEffect(() => {
+
+    if (mode === "break") {
+
+      setSecondsLeft(
+        breakMinutes * 60
+      );
+    }
+
+  }, [breakMinutes]);
+
+  useEffect(() => {
+
     let interval;
 
     if (isRunning) {
+
       interval = setInterval(() => {
+
         setSecondsLeft((prev) => {
+
           if (prev === 1) {
+
             handleSessionEnd();
+
             return 0;
           }
+
           return prev - 1;
         });
+
       }, 1000);
     }
 
     return () => clearInterval(interval);
+
   }, [isRunning]);
 
   const handleSessionEnd = () => {
+
+    setAnimate(true);
+
+    setTimeout(() => {
+      setAnimate(false);
+    }, 1200);
+
     const audio = new Audio(
       "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
     );
+
     audio.play();
 
     if (mode === "focus") {
+
       const newSession = {
+
         duration: focusMinutes,
-        time: new Date().toLocaleTimeString([], {
-          hour: "numeric",
-          minute: "2-digit",
-        }),
+
+        time: new Date()
+          .toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit",
+          }),
       };
 
-      setHistory((prev) => [newSession, ...prev]);
+      setHistory((prev) => [
+        newSession,
+        ...prev,
+      ]);
 
       setMode("break");
-      setSecondsLeft(breakMinutes * 60);
+
+      setSecondsLeft(
+        breakMinutes * 60
+      );
+
     } else {
+
       setMode("focus");
-      setSecondsLeft(focusMinutes * 60);
+
+      setSecondsLeft(
+        focusMinutes * 60
+      );
     }
   };
 
-  const startTimer = () => setIsRunning(true);
+  const startTimer = () => {
+    setIsRunning(true);
+  };
 
-  const pauseTimer = () => setIsRunning(false);
+  const pauseTimer = () => {
+    setIsRunning(false);
+  };
 
   const resetTimer = () => {
+
     setIsRunning(false);
 
     if (mode === "focus") {
-      setSecondsLeft(focusMinutes * 60);
+
+      setSecondsLeft(
+        focusMinutes * 60
+      );
+
     } else {
-      setSecondsLeft(breakMinutes * 60);
+
+      setSecondsLeft(
+        breakMinutes * 60
+      );
     }
   };
 
   return (
-    <div className={`app ${mode}`}>
+
+    <div
+      className={`app ${mode} ${
+        animate ? "pulse" : ""
+      }`}
+    >
+
       <div className="container">
+
         <h1>Pomodoro Timer</h1>
 
-        <Timer secondsLeft={secondsLeft} mode={mode} />
+        <div className="timer-wrapper">
+
+          <ProgressRing
+            secondsLeft={secondsLeft}
+            totalSeconds={totalSeconds}
+          />
+
+          <div className="timer-overlay">
+
+            <Timer
+              secondsLeft={secondsLeft}
+              mode={mode}
+            />
+
+          </div>
+
+        </div>
 
         <Controls
           isRunning={isRunning}
@@ -127,10 +234,13 @@ useEffect(() => {
           breakMinutes={breakMinutes}
           setFocusMinutes={setFocusMinutes}
           setBreakMinutes={setBreakMinutes}
+          isRunning={isRunning}
         />
 
         <History history={history} />
+
       </div>
+
     </div>
   );
 }

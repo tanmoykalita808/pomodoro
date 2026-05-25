@@ -1,30 +1,65 @@
 function Settings({
+
   focusMinutes,
+
   breakMinutes,
+
   setFocusMinutes,
+
   setBreakMinutes,
+
+  isRunning,
+
 }) {
+
   return (
+
     <div className="settings">
+
       <div>
-        <label>Focus Minutes</label>
+
+        <label>
+          Focus Minutes
+        </label>
 
         <input
           type="number"
+
           value={focusMinutes}
-          onChange={(e) => setFocusMinutes(Number(e.target.value))}
+
+          disabled={isRunning}
+
+          onChange={(e) =>
+            setFocusMinutes(
+              Number(e.target.value)
+            )
+          }
         />
+
       </div>
 
       <div>
-        <label>Break Minutes</label>
+
+        <label>
+          Break Minutes
+        </label>
 
         <input
           type="number"
+
           value={breakMinutes}
-          onChange={(e) => setBreakMinutes(Number(e.target.value))}
+
+          disabled={isRunning}
+
+          onChange={(e) =>
+            setBreakMinutes(
+              Number(e.target.value)
+            )
+          }
         />
+
       </div>
+
     </div>
   );
 }

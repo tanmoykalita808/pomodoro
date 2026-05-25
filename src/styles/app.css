@@ -170,15 +170,14 @@ button:active {
     0 4px 10px rgba(0,0,0,0.05);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) {}
 
   .container {
     padding: 28px;
   }
 
   .timer {
-    font-size: 64px;
-  }
+  font-size: 68px;
 
   .controls {
     flex-direction: column;
@@ -189,4 +188,83 @@ button:active {
     align-items: center;
   }
 
+}
+
+.timer-wrapper {
+
+  position: relative;
+
+  width: 320px;
+  height: 320px;
+
+  margin:
+    0 auto
+    30px;
+}
+
+.timer-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-direction: column;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.ring-bg {
+  stroke: rgba(255,255,255,0.4);
+}
+
+.ring-progress {
+  stroke: black;
+
+  stroke-linecap: round;
+
+  transition:
+    stroke-dashoffset 1s linear;
+}
+
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer {
+  margin-bottom: 0;
+}
+
+@keyframes pulseGlow {
+
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+
+}
+
+.pulse .container {
+  animation:
+    pulseGlow 0.8s ease;
+}
+
+.settings input:disabled {
+
+  opacity: 0.6;
+
+  cursor: not-allowed;
 }
